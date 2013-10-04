@@ -58,6 +58,28 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
             $this->fail('Failed asserting listeners are called when event is triggered');
         }
     }
+
+    public function testTwoListenersOnSameEvent()
+    {
+        $triggered = array(false, false);
+
+        $this->dispatcher->attach('foo', 'operation', function () use (&$triggered) {
+            $triggered[0] = true;
+        });
+
+        $this->dispatcher->attach('foo', 'operation', function () use (&$triggered) {
+            $triggered[1] = true;
+        });
+
+        $this->dispatcher->trigger('foo', 'operation');
+
+        if (!$triggered[0]) {
+            if (!$triggered[1]) {
+                $this->fail('Failed asserting listeners are called when event is triggered');
+            }
+            $this->fail('Failed asserting both listeners are called when event is triggered');
+        }
+    }
 }
 
 class DummyListener
