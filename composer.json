@@ -1,0 +1,23 @@
+{
+    "name": "wouterj/shift",
+    "description": "A event-driven MOVE framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wouter J",
+            "email": "wouter@wouterj.nl"
+        }
+    ],
+
+    "require": {
+        "zendframework/zend-eventmanager": "2.3.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.8"
+    },
+
+    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin"
+    }
+}
