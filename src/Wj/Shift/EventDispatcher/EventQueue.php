@@ -55,7 +55,7 @@ class EventQueue implements \Countable, \IteratorAggregate
     private function sortListeners($event)
     {
         if (isset($this->sortedListeners[$event])) {
-            throw new \RuntimeException('Listeners for "%s" are already sorted', $event);
+            throw new \RuntimeException(sprintf('Listeners for "%s" are already sorted', $event));
         }
 
         $listeners = $this->listeners[$event];

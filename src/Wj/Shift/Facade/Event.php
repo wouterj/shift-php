@@ -17,6 +17,11 @@ class Event
     {
         return new AttachingEvent(self::$dispatcher, $event);
     }
+
+    public static function trigger($event)
+    {
+        return new TriggeringEvent(self::$dispatcher, $event);
+    }
 }
 
 class AttachingEvent
@@ -50,5 +55,35 @@ class AttachingEvent
         }
 
         $this->dispatcher->attach($this->event, $this->target, $listener);
+    }
+}
+
+class TriggeringEvent
+{
+    private $dispatcher;
+    private $target;
+    private $event;
+
+    public function __construct(EventDispatcherInterface $dispatcher, $event)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->event = $event;
+    }
+
+    public function forA($target)
+    {
+        $this->target = $target;
+
+        return $this;
+    }
+
+    public function forAn($target)
+    {
+        return $this->forA($target);
+    }
+
+    public function with($event)
+    {
+        $this->dispatcher->trigger($this->event, $this->target, $event);
     }
 }

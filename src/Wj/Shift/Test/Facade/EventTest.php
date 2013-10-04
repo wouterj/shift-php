@@ -30,9 +30,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $dispatcher->attach('event_name', 'operation', function ($e) {
             $e->fail = false;
         });
+        Event::setDispatcher($dispatcher);
 
         $event = new DummyEvent();
-        Event::trigger('event_name')->for('operation')->with($event);
+        Event::trigger('event_name')->forAn('operation')->with($event);
 
         if ($event->fail) {
             $this->fail('Failed asserting Event::trigger() triggers an event');
