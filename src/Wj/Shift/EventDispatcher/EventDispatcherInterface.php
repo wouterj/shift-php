@@ -12,9 +12,9 @@ interface EventDispatcherInterface
      *
      * @param string $eventName
      * @param string $target    The target, a class name, etc.
-     * @param obj    $event     The event class
+     * @param obj    $event     Optional. The event class
      */
-    public function trigger($eventName, $target, $event);
+    public function trigger($eventName, $target, $event = null);
 
     /**
      * Attaches a listener to an event.

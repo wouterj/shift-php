@@ -6,7 +6,7 @@ class EventDispatcher implements EventDispatcherInterface
 {
     private $listeners;
 
-    public function trigger($eventName, $target, $event)
+    public function trigger($eventName, $target, $event = null)
     {
     }
 

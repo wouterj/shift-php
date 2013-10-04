@@ -43,6 +43,21 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $this->dispatcher->attach('foo', 'operation', 'invalid');
     }
+
+    public function testTriggersEvents()
+    {
+        $triggered = false;
+
+        $this->dispatcher->attach('foo', 'operation', function () use ($triggered) {
+            $triggered = true;
+        });
+
+        $this->dispatcher->trigger('foo', 'operation');
+
+        if (!$triggered) {
+            $this->fail('Failed asserting listeners are called when event is triggered');
+        }
+    }
 }
 
 class DummyListener
