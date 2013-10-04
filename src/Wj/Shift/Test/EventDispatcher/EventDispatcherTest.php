@@ -20,7 +20,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $this->dispatcher->attach('foo', 'operation', $callable);
 
-        $this->assertArrayHasKey('foo', $this->dispatcher->getListeners('operation'));
+        $this->assertTrue($this->dispatcher->getListeners('operation')->has('foo'));
         $this->assertCount(1, $this->dispatcher->getListeners('operation'));
     }
 

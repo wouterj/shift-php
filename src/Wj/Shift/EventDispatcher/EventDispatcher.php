@@ -4,12 +4,16 @@ namespace Wj\Shift\EventDispatcher;
 
 class EventDispatcher implements EventDispatcherInterface
 {
-    private $listeners;
+    private $listeners = array();
 
     public function trigger($eventName, $target, $event = null)
     {
-        if (isset($this->listeners[$target]) && isset($this->listeners[$target][$eventName])) {
-            return call_user_func($this->listeners[$target][$eventName], $event);
+        if (isset($this->listeners[$target]) && $this->listeners[$target]->has($eventName)) {
+            $listeners = $this->listeners[$target]->get($eventName);
+
+            foreach ($listeners as $listener) {
+                call_user_func($listener, $event);
+            }
         }
     }
 
@@ -27,10 +31,10 @@ class EventDispatcher implements EventDispatcherInterface
         }
 
         if (!isset($this->listeners[$target])) {
-            $this->listeners[$target] = array();
+            $this->listeners[$target] = new EventQueue();
         }
 
-        $this->listeners[$target][$eventName] = $listener;
+        $this->listeners[$target]->add($eventName, $listener);
     }
 
     public function getListeners($target = null)
