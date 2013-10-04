@@ -96,9 +96,29 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
             $this->fail('Failed asserting only operation listeners are dispatched');
         }
     }
+
+    public function testEventClasses()
+    {
+        $event = new DummyEvent();
+
+        $this->dispatcher->attach('foo', 'operation', function (DummyEvent $e) {
+            $e->fail = false;
+        });
+
+        $this->dispatcher->trigger('foo', 'operation', $event);
+
+        if ($event->fail) {
+            $this->fail('Failed asserting event gets passed to listener');
+        }
+    }
 }
 
 class DummyListener
 {
     public function onFoo() { }
+}
+
+class DummyEvent
+{
+    public $fail = true;
 }
