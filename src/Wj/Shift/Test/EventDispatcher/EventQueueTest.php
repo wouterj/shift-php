@@ -51,4 +51,21 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             $this->fail('Failed iterating over the queue');
         }
     }
+
+    public function testSortingOnPriority()
+    {
+        $queue = new EventQueue();
+        $queue->add('event_name', function () { }, 100);
+        $queue->add('event_name', function () { }, 200);
+
+        $names = array('', 'another_event_name', 'event_name');
+        foreach ($queue as $name => $event) {
+            $this->assertEquals(next($names), $name);
+            $this->assertInstanceOf('Closure', $event);
+        }
+
+        if (current($names) !== end($names)) {
+            $this->fail('Failed iterating over the queue');
+        }
+    }
 }
