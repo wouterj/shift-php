@@ -8,6 +8,9 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function trigger($eventName, $target, $event = null)
     {
+        if (isset($this->listeners[$target]) && isset($this->listeners[$target][$eventName])) {
+            return call_user_func($this->listeners[$target][$eventName], $event);
+        }
     }
 
     public function attach($eventName, $target, $listener)

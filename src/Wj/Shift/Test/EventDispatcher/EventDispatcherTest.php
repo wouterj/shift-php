@@ -48,7 +48,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $triggered = false;
 
-        $this->dispatcher->attach('foo', 'operation', function () use ($triggered) {
+        $this->dispatcher->attach('foo', 'operation', function () use (&$triggered) {
             $triggered = true;
         });
 
