@@ -2,7 +2,7 @@
 
 namespace Wj\Shift\EventDispatcher;
 
-class EventQueue
+class EventQueue implements \Countable
 {
     private $listeners = array();
 
@@ -23,5 +23,10 @@ class EventQueue
         }
 
         return $this->listeners[$event];
+    }
+
+    public function count()
+    {
+        return count($this->listeners);
     }
 }
