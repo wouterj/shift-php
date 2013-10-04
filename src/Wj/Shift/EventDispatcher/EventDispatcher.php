@@ -10,13 +10,24 @@ class EventDispatcher implements EventDispatcherInterface
     {
     }
 
-    public function attach($eventName, $target, $event)
+    public function attach($eventName, $target, $listener)
     {
+        if (!is_callable($listener)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Listeners can only be callables, tried to attach type of "%s" to "%s" with target "%s"',
+                    gettype($listener),
+                    $eventName,
+                    $target
+                )
+            );
+        }
+
         if (!isset($this->listeners[$target])) {
             $this->listeners[$target] = array();
         }
 
-        $this->listeners[$target][$eventName] = $event;
+        $this->listeners[$target][$eventName] = $listener;
     }
 
     public function getListeners($target = null)

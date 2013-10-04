@@ -26,11 +26,11 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     public function getRegisterValidCallableData()
     {
-        $obj = new \StdClass();
+        $obj = new DummyListener();
 
         $data = array(
             function () { },
-            array($obj, 'foo'),
+            array($obj, 'onFoo'),
         );
 
         return array_map(function ($i) { return array($i); }, $data);
@@ -43,4 +43,9 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $this->dispatcher->attach('foo', 'operation', 'invalid');
     }
+}
+
+class DummyListener
+{
+    public function onFoo() { }
 }
