@@ -10,7 +10,8 @@
     ],
 
     "require": {
-        "zendframework/zend-eventmanager": "2.3.*"
+        "zendframework/zend-eventmanager": "2.3.*",
+        "symfony/http-foundation": "~2.3"
     },
     "require-dev": {
         "mockery/mockery": "~0.8"
