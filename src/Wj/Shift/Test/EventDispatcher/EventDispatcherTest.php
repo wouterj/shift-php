@@ -80,6 +80,22 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
             $this->fail('Failed asserting both listeners are called when event is triggered');
         }
     }
+
+    public function testDoesNotCallListenersOfOtherTargets()
+    {
+        $fail = false;
+
+        $this->dispatcher->attach('foo', 'operation', function () { });
+        $this->dispatcher->attach('foo', 'model', function () use (&$fail) {
+            $fail = true;
+        });
+
+        $this->dispatcher->trigger('foo', 'operation');
+
+        if ($fail) {
+            $this->fail('Failed asserting only operation listeners are dispatched');
+        }
+    }
 }
 
 class DummyListener
