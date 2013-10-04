@@ -13,6 +13,11 @@ class EventQueue implements \Countable, \IteratorAggregate
         unset($this->sortedListeners[$event]);
     }
 
+    public function has($event)
+    {
+        return isset($this->listeners[$event]);
+    }
+
     public function get($event)
     {
         if (!isset($this->listeners[$event])) {
