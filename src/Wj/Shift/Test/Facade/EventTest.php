@@ -13,7 +13,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
         Event::setDispatcher($dispatcher);
 
         $called = false;
-        Event::on('event_name')->as('operation')->do(function () use (&$called) {
+        Event::on('event_name')->asAn('operation')->call(function () use (&$called) {
             $called = true;
         });
 
