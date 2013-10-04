@@ -68,4 +68,13 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             $this->assertInternalType(next($types), $event);
         }
     }
+
+    public function testHasser()
+    {
+        $queue = new EventQueue();
+        $queue->add('event_name', function () { });
+
+        $this->assertTrue($queue->has('event_name'));
+        $this->assertFalse($queue->has('another_event_name'));
+    }
 }
