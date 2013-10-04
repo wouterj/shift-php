@@ -25,4 +25,13 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
         $queue->get('event_name');
     }
+
+    public function testCount()
+    {
+        $queue = new EventQueue();
+        $queue->add('event_name', function () { });
+        $queue->add('another_event_name', function () { });
+
+        $this->assertCount(2, $queue);
+    }
 }
