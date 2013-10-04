@@ -2,21 +2,39 @@
 
 namespace Wj\Shift\EventDispatcher;
 
+/**
+ * Handles event attaching and triggering.
+ *
+ * @author Wouter J <wouter@wouterj.nl>
+ */
 class EventDispatcher implements EventDispatcherInterface
 {
+    /**
+     * @var EventQueue[]
+     */
     private $listeners = array();
 
+    /**
+     * {@inheritDoc}
+     */
     public function trigger($eventName, $target, $event = null)
     {
-        if (isset($this->listeners[$target]) && $this->listeners[$target]->has($eventName)) {
-            $listeners = $this->listeners[$target]->get($eventName);
+        try {
+            if (isset($this->listeners[$target]) && $this->listeners[$target]->has($eventName)) {
+                $listeners = $this->listeners[$target]->get($eventName);
 
-            foreach ($listeners as $listener) {
-                call_user_func($listener, $event);
+                foreach ($listeners as $listener) {
+                    call_user_func($listener, $event);
+                }
             }
+        } catch (\InvalidArgumentException $e) {
+            // do nothing
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function attach($eventName, $target, $listener)
     {
         if (!is_callable($listener)) {
@@ -37,6 +55,9 @@ class EventDispatcher implements EventDispatcherInterface
         $this->listeners[$target]->add($eventName, $listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getListeners($target = null)
     {
         if ($target !== null) {

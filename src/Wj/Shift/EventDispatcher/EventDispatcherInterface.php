@@ -28,6 +28,8 @@ interface EventDispatcherInterface
     /**
      * @param string $target Optional. The target, if ommitted all listeners 
      *     are returned, otherwise only those for the current target are.
+     *
+     * @return EventQueue
      */
     public function getListeners($target = null);
 }

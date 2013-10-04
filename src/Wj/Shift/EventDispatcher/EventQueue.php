@@ -2,22 +2,45 @@
 
 namespace Wj\Shift\EventDispatcher;
 
+/**
+ * A Queue, which holds, searches and sorts events.
+ *
+ * @author Wouter J <wouter@wouterj.nl>
+ */
 class EventQueue implements \Countable, \IteratorAggregate
 {
     private $listeners = array();
     private $sortedListeners = array();
 
+    /**
+     * @param string   $event
+     * @param callable $listener
+     * @param integer  $priority Higher number means earlier
+     */
     public function add($event, $listener, $priority = 0)
     {
         $this->listeners[$event][$priority][] = $listener;
         unset($this->sortedListeners[$event]);
     }
 
+    /**
+     * @param string $event
+     *
+     * @return boolean
+     */
     public function has($event)
     {
         return isset($this->listeners[$event]);
     }
 
+    /**
+     * @param string $event
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException When the event does not have 
+     *     listeners
+     */
     public function get($event)
     {
         if (!isset($this->listeners[$event])) {
@@ -32,7 +55,7 @@ class EventQueue implements \Countable, \IteratorAggregate
         try {
             $this->sortListeners($event);
         } catch (\RuntimeException $e) {
-            // don't do anything
+            // do nothing
         }
 
         return $this->sortedListeners[$event];
@@ -52,6 +75,12 @@ class EventQueue implements \Countable, \IteratorAggregate
         return new \ArrayIterator($this->sortedListeners);
     }
 
+    /**
+     * @param string $event
+     *
+     * @throws \RuntimeException When listeners are already sorted for this 
+     *     event
+     */
     private function sortListeners($event)
     {
         if (isset($this->sortedListeners[$event])) {
