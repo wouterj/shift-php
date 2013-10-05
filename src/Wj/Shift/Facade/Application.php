@@ -10,7 +10,7 @@
  */
 
 
-namespace Wj\Shift;
+namespace Wj\Shift\Facade;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
