@@ -4,7 +4,7 @@ namespace Wj\Shift\Tests\Fixtures;
 
 use Wj\Shift\Facade\Operation;
 
-class FooOperator
+class ValidOperator
 {
     public function registerOperations()
     {

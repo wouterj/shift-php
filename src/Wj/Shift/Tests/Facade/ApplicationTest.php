@@ -16,10 +16,10 @@ use Wj\Shift\Facade\Event;
 use Wj\Shift\Facade\Application;
 use Wj\Shift\EventDispatcher\EventDispatcher;
 
-use Wj\Shift\Tests\Fixtures\FooOperator;
-use Wj\Shift\Tests\Fixtures\DummyEvent;
+use Wj\Shift\Tests\Fixtures;
 
-require_once __DIR__.'/../Fixtures/operators/operator-foo.php';
+require_once __DIR__.'/../Fixtures/operators/operator-valid.php';
+require_once __DIR__.'/../Fixtures/operators/operator-invalid.php';
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,13 +33,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisteringOperators()
     {
-        Application::add(new FooOperator());
+        Application::add(new Fixtures\ValidOperator());
 
-        $event = new DummyEvent();
+        $event = new Fixtures\DummyEvent();
         $this->dispatcher->trigger('event_name', 'operation', $event);
 
         if (!$event) {
             $this->fail('Failed asserting Application::add registers operators');
         }
+    }
+
+    /**
+     * @expctedException \BadMethodCallException
+     */
+    public function testRegistingInvalidOperators()
+    {
+        Application::add(new Fixtures\InvalidOperator());
     }
 }
