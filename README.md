@@ -29,7 +29,11 @@ The main facade is ``Event``, the three others (``Operation``, ``Model`` and
 
 Make sure you always boot your application before using it, booting it makes
 sure the Event Dispatcher is added to the ``Event`` facade. To boot it, use
-``Application::boot()``.
+``Application::boot()``:
+
+    use Wj\Shift\Facade\Application;
+
+    Application::boot();
 
 ### Event
 
@@ -39,6 +43,8 @@ an ``AttachingEvent``, on which you must set the target (using ``->asA`` /
 the event, for instance a class name or class type. The listener can be any
 kind of callable:
 
+    use Wj\Shift\Facade\Event;
+
     Event::on('some_event')->forA('the_target')->call(function ($event) {
         // ... do something nice
     });
@@ -46,6 +52,8 @@ kind of callable:
 Use ``Event::trigger($event_name)`` to trigger an event, this will call all
 its listeners. This method returns a ``TriggeringEvent``, on which you must
 set the target (``->forA`` / ``->forAn``) and the event class (can be ``null``):
+
+    use Wj\Shift\Facade\Event;
 
     $event = new SomeEvent();
     // ... set up event class
@@ -59,6 +67,8 @@ Operations are executed when a certain event is called, use
 ``AttachingEvent`` which has set the target to ``operation``. You are able to
 change this.
 
+    use Wj\Shift\Facade\Operation;
+
     Operation::on('some_event')->call(function ($event) {
         // ... perform an operation
     });
@@ -66,10 +76,21 @@ change this.
 ### Model
 
 Models also listen to events and can be attached using ``Model::on()``. This
-returns an ``AttachingEvent`` with target set to ``model``.
+returns an ``AttachingEvent`` with the target set to ``model``.
+
+    use Wj\Shift\Facade\Model;
 
     Model::on('some_event')->call(function ($event) {
         // ... do some modelish things
+    });
+
+### View
+
+Views also listen to events and can be attached using ``View::on()``. This
+returns an ``AttachingEvent`` with the target set to ``view``.
+
+    View::on('some_event')->call(function ($event) {
+        // ... render view
     });
 
 ## Contributing
