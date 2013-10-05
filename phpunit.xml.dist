@@ -6,7 +6,7 @@
 
     <testsuites>
         <testsuite name="Shift Test Suite">
-            <directory>./src/Wj/Shift/Test</directory>
+            <directory>./src/Wj/Shift/Tests</directory>
         </testsuite>
     </testsuites>
 
