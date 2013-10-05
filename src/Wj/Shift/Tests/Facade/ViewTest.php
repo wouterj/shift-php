@@ -29,9 +29,11 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function testRegistering()
     {
         $called = false;
-        View::on('show_homepage')->call(function () use ($called) {
+        View::on('show_homepage')->call(function () use (&$called) {
             $called = true;
         });
+
+        $this->dispatcher->trigger('show_homepage', 'view');
 
         if (!$called) {
             $this->fail('Failed asserting View::on registers views');
