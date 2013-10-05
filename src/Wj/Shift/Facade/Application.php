@@ -21,4 +21,14 @@ class Application
         $dispatcher = new EventDispatcher();
         Event::setDispatcher($dispatcher);
     }
+
+    /**
+     * Adds an Operator.
+     *
+     * @param object $operator The operator instance
+     */
+    public static function add($operator)
+    {
+        $operator->registerOperations();
+    }
 }
