@@ -44,7 +44,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expctedException \BadMethodCallException
+     * @expectedException \BadMethodCallException
      */
     public function testRegistingInvalidOperators()
     {

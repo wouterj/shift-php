@@ -29,6 +29,18 @@ class Application
      */
     public static function add($operator)
     {
+        if (!method_exists($operator, 'registerOperations')) {
+            $name = explode('\\', get_class($operator));
+            $name = end($name);
+
+            throw new \BadMethodCallException(
+                sprintf(
+                    'Operator "%s" does not have the required method "registerOperations"',
+                    $name
+                )
+            );
+        }
+
         $operator->registerOperations();
     }
 }
