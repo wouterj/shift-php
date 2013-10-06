@@ -14,8 +14,14 @@ namespace Wj\Shift\Facade;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @author Wouter J <wouter@wouterj.nl>
+ */
 class Application
 {
+    /**
+     * Boots the application.
+     */
     public static function boot()
     {
         $dispatcher = new EventDispatcher();
