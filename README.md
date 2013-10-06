@@ -93,6 +93,33 @@ returns an ``AttachingEvent`` with the target set to ``view``.
         // ... render view
     });
 
+### Operators
+
+Operators are packages that provide operations and models to implement one
+feature, such as a GuestBookOperator. To create an Operator, create a class
+which has at least a ``registerOperations`` method. This will be used to
+register all operations. You may include a file in this method, to seperate
+the operations from the registering:
+
+    // operations.php
+    Operation::on(...)->call(...);
+    Operation::on(...)->call(...);
+    Operation::on(...)->call(...);
+
+    // GuestBookOperator.php
+    class GuestBookOperator
+    {
+        public function registerOperations()
+        {
+            require_once __DIR__.'/operations.php';
+        }
+    }
+
+To register an Operator, use ``Application::add``:
+
+    Application::add(new GuestBookOperator);
+>>>>>>> Adds documentation
+
 ## Contributing
 
 A framework can only get good with the contributions of other people. Issues,
