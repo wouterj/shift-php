@@ -10,15 +10,44 @@
  */
 
 
-namespace Wj\Shift;
+namespace Wj\Shift\Facade;
 
+use Wj\Shift\Operator\OperatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @author Wouter J <wouter@wouterj.nl>
+ */
 class Application
 {
+    /**
+     * Boots the application.
+     */
     public static function boot()
     {
         $dispatcher = new EventDispatcher();
         Event::setDispatcher($dispatcher);
+    }
+
+    /**
+     * Adds an Operator.
+     *
+     * @param object $operator The operator instance
+     */
+    public static function add($operator)
+    {
+        if (!$operator instanceof OperatorInterface) {
+            $name = explode('\\', get_class($operator));
+            $name = end($name);
+
+            throw new \BadMethodCallException(
+                sprintf(
+                    'Operator "%s" does not have the required method "registerOperations"',
+                    $name
+                )
+            );
+        }
+
+        $operator->loadAll();
     }
 }
