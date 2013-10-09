@@ -97,9 +97,10 @@ returns an ``AttachingEvent`` with the target set to ``view``.
 
 Operators are packages that provide operations and models to implement one
 feature, such as a GuestBookOperator. To create an Operator, create a class
-which has at least a ``registerOperations`` method. This will be used to
-register all operations. You may include a file in this method, to seperate
-the operations from the registering:
+which extends ``Wj\Shift\Operator\OperatorInterface``. This requires a method
+``loadAll``, which will be used to load all operators, models and views. You
+may include a file in this method, to seperate the operations from the
+registering:
 
     // operations.php
     Operation::on(...)->call(...);
@@ -109,7 +110,7 @@ the operations from the registering:
     // GuestBookOperator.php
     class GuestBookOperator
     {
-        public function registerOperations()
+        public function loadAll()
         {
             require_once __DIR__.'/operations.php';
         }
@@ -118,7 +119,6 @@ the operations from the registering:
 To register an Operator, use ``Application::add``:
 
     Application::add(new GuestBookOperator);
->>>>>>> Adds documentation
 
 ## Contributing
 
