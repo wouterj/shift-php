@@ -12,6 +12,7 @@
 
 namespace Wj\Shift\Facade;
 
+use Wj\Shift\Operator\OperatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -35,7 +36,7 @@ class Application
      */
     public static function add($operator)
     {
-        if (!method_exists($operator, 'registerOperations')) {
+        if (!$operator instanceof OperatorInterface) {
             $name = explode('\\', get_class($operator));
             $name = end($name);
 
@@ -47,6 +48,6 @@ class Application
             );
         }
 
-        $operator->registerOperations();
+        $operator->loadAll();
     }
 }

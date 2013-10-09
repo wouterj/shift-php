@@ -3,10 +3,11 @@
 namespace Wj\Shift\Tests\Fixtures;
 
 use Wj\Shift\Facade\Operation;
+use Wj\Shift\Operator\OperatorInterface;
 
-class ValidOperator
+class ValidOperator implements OperatorInterface
 {
-    public function registerOperations()
+    public function loadAll()
     {
         Operation::on('event_name')->call(function (DummyEvent $event) {
             $event->called = true;
