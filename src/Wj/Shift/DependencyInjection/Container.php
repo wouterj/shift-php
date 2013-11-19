@@ -24,7 +24,8 @@ class Container implements ContainerInterface
     {
         $reflection = new \ReflectionClass($class);
 
-        if (null === $reflection->getConstructor()) {
+        $constructor = $reflection->getConstructor();
+        if (null === $constructor || 0 === count($constructor->getParameters())) {
             return $reflection->newInstance();
         }
     }

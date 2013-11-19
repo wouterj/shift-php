@@ -32,4 +32,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf("StdClass", $this->container->get('StdClass'));
     }
+
+    public function testGetsClassWithoutInjections()
+    {
+        $service = $this->container->get('Wj\Shift\Tests\Fixtures\DependencyInjection\WithoutInjections');
+
+        $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithoutInjections', $service);
+        $this->assertTrue($service->isInitialized());
+    }
 }
