@@ -22,6 +22,11 @@ class Container implements ContainerInterface
      */
     public function get($class)
     {
+        $reflection = new \ReflectionClass($class);
+
+        if (null === $reflection->getConstructor()) {
+            return $reflection->newInstance();
+        }
     }
 
     /**

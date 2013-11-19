@@ -28,7 +28,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->container = null;
     }
 
-    public function testGettingClassWithoutArguments()
+    public function testGetsClassWithoutConstructor()
     {
         $this->assertInstanceOf("StdClass", $this->container->get('StdClass'));
     }
