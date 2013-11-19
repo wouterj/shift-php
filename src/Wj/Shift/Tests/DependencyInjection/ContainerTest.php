@@ -40,4 +40,23 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithoutInjections', $service);
         $this->assertTrue($service->isInitialized());
     }
+
+    public function testGetsClassWithServiceInjection()
+    {
+        $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithServiceInjection', $this->container->get('Wj\Shift\Tests\Fixtures\DependencyInjection\WithServiceInjection'));
+    }
+
+    public function testGetsClassWithDefaultValue()
+    {
+        $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithDefaultValue', $this->container->get('Wj\Shift\Tests\Fixtures\DependencyInjection\WithDefaultValue'));
+    }
+
+    public function testsGetsClassWithParameter()
+    {
+        $this->container->setParameter('a', 'foo');
+
+        $service = $this->container->get('Wj\Shift\Tests\Fixtures\DependencyInjection\WithParameter');
+        $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithParameter', $service);
+        $this->assertEquals('foo', $service->getPassedValue());
+    }
 }
