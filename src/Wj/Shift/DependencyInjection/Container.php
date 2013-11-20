@@ -12,12 +12,21 @@
 
 namespace Wj\Shift\DependencyInjection;
 
+use Wj\Shift\DependencyInjection\Annotations\Inject as InjectAnnotation;
 use Wj\Shift\DependencyInjection\Exception;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class Container implements ContainerInterface
 {
     private $parameters = array();
     private $shared = array();
+    private $annotationReader;
+
+    public function __construct()
+    {
+        $this->annotationReader = new AnnotationReader();
+    }
 
     /**
      * {@inheritDoc}
@@ -49,11 +58,26 @@ class Container implements ContainerInterface
             } elseif (array_key_exists($parameter->getName(), $this->parameters)) {
                 $arguments[] = $this->parameters[$parameter->getName()];
             } else {
-                throw new Exception\UnresolvableServiceException(
-                    $parameter->getDeclaringClass(),
-                    $parameter->getPosition(),
-                    'No service or parameter found'
-                );
+                $annotations = $this->annotationReader->getMethodAnnotations($parameter->getDeclaringFunction());
+                $found = false;
+                foreach ($annotations as $annotation) {
+                    if ($annotation instanceof InjectAnnotation) {
+                        foreach ($annotation->getParameters() as $name => $param) {
+                            if ($name === $parameter->getName()) {
+                                $arguments[] = $param;
+                                $found = true;
+                            }
+                        }
+                    }
+                }
+
+                if (!$found) {
+                    throw new Exception\UnresolvableServiceException(
+                        $parameter->getDeclaringClass()->getName(),
+                        $parameter->getName(),
+                        'No service or parameter found'
+                    );
+                }
             }
         }
 

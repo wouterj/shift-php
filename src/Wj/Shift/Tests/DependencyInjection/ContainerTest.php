@@ -59,4 +59,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Wj\Shift\Tests\Fixtures\DependencyInjection\WithParameter', $service);
         $this->assertEquals('foo', $service->getPassedValue());
     }
+
+    public function testParameterAliasingWithAnnotations()
+    {
+        $this->container->setParameter('foo', 'cat');
+
+        $service = $this->container->get('Wj\Shift\Tests\Fixtures\DependencyInjection\WithParameterAnnotation');
+    }
 }

@@ -14,13 +14,13 @@ namespace Wj\Shift\DependencyInjection\Exception;
 
 class UnresolvableServiceException extends ContainerException
 {
-    public function __construct($class, $parameterIndex, $message, $code = 0, \Exception $previous = null)
+    public function __construct($class, $parameterName, $message, $code = 0, \Exception $previous = null)
     {
         parent::__construct(
             sprintf(
-                'Unresolvable service: "%s"; Cannot resolve parameter at position %d: %s',
+                'Unresolvable service: "%s"; Cannot resolve parameter "$%s": %s',
                 $class,
-                $parameterIndex,
+                $parameterName,
                 $message
             ),
             $code,
