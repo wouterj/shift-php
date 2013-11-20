@@ -95,30 +95,31 @@ returns an ``AttachingEvent`` with the target set to ``view``.
 
 ### Operators
 
-Operators are packages that provide operations and models to implement one
-feature, such as a GuestBookOperator. To create an Operator, create a class
-which extends ``Wj\Shift\Operator\OperatorInterface``. This requires a method
-``loadAll``, which will be used to load all operators, models and views. You
-may include a file in this method, to seperate the operations from the
-registering:
+Operators are classes which holds multiple operations. Operator classes
+implement ``Wj\Shift\Operator\OperatorInterface``. This requires a static
+method called `getOperations` which returns an array of methods and events to
+listen to:
 
-    // operations.php
-    Operation::on(...)->call(...);
-    Operation::on(...)->call(...);
-    Operation::on(...)->call(...);
+    namespace Acme\Operator;
 
-    // GuestBookOperator.php
-    class GuestBookOperator
+    use Wj\Shift\Operator\OperatorInterface;
+
+    class UserOperator implements OperatorInterface
     {
-        public function loadAll()
+        public static function getOperations()
         {
-            require_once __DIR__.'/operations.php';
+            return array(
+                // key is the event and value is the method
+                'save_user' => 'onSaveUser',
+                // you can also attach multiple methods to one event
+                'find_user' => array('onFindUser', 'onSecondFindUser'),
+            );
         }
     }
 
-To register an Operator, use ``Application::add``:
+After this, you can register the Operator using ``Operator::add()``:
 
-    Application::add(new GuestBookOperator);
+    Operator::add('Acme\Operator\UserOperator');
 
 ## Contributing
 
