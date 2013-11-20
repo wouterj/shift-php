@@ -13,15 +13,16 @@
 namespace Wj\Shift\Operator;
 
 /**
- * An Operator provides operations, models and views to implement a specific 
- * feature.
+ * An Operator bundles multiple Operations inside a class.
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
 interface OperatorInterface
 {
     /**
-     * Loads all operations, models and views.
+     * Register the events to attach operations in this operator.
+     *
+     * @return array The key is the event and the value is/are the method(s)
      */
-    public function loadAll();
+    public static function getOperations();
 }
