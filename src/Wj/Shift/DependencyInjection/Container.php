@@ -46,7 +46,7 @@ class Container implements ContainerInterface
     /**
      * @param \ReflectionParameter[] $parameters
      */
-    protected function resolveArguments($parameters)
+    public function resolveArguments($parameters)
     {
         $arguments = array();
 

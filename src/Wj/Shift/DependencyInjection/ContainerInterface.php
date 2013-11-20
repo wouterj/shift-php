@@ -44,4 +44,16 @@ interface ContainerInterface
      * @return boolean
      */
     public function has($class);
+
+    /**
+     * Resolves the values for the arguments.
+     *
+     * @param \ReflectionParameter[] $parameters
+     *
+     * @return array The values of the arguments
+     *
+     * @throws Exception\UnresolvableServiceException When a parameter cannot 
+     *     be resolved
+     */
+    public function resolveArguments($parameters);
 }
