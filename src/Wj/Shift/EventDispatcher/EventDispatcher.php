@@ -109,10 +109,12 @@ class EventDispatcher implements EventDispatcherInterface
             // object
             $ref = new \ReflectionClass($listener[0]);
             $parameters = $ref->getMethod($listener[1])->getParameters();
+            $stringified = get_class($listener[0]).'::'.$listener[1];
         } else {
             // method/function/closure
             $ref = new \ReflectionFunction($listener);
             $parameters = $ref->getParameters();
+            $stringified = $ref->getName();
         }
 
         $eventIndex = false;
@@ -130,7 +132,7 @@ class EventDispatcher implements EventDispatcherInterface
             if (count($parameters) > 0) {
                 throw new \RuntimeException(sprintf(
                     'Cannot resolve arguments for listener "%s", did you forgot to set the container for the dispatcher?',
-                    $listener
+                    $stringified
                 ));
             }
             $resolvedArguments = array();

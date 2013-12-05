@@ -121,6 +121,60 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
             $this->fail('Failed asserting event gets passed to listener');
         }
     }
+
+    public function testEventsWithArguments()
+    {
+        $that = $this;
+        $listener = function ($param) use ($that) {
+            $that->assertEquals('resolved_argument', $param);
+        };
+
+        $container = \Mockery::mock('Wj\Shift\DependencyInjection\ContainerInterface');
+        $container->shouldReceive('resolveArguments')
+            ->andReturn(array('resolved_argument'));
+
+        $this->dispatcher->setContainer($container);
+
+        $this->dispatcher->attach('foo', 'operation', $listener);
+
+        $this->dispatcher->trigger('foo', 'operation');
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testFailWhenEventsWithArgumentCalledWithoutContainer()
+    {
+        $this->dispatcher->attach('foo', 'operation', function ($param) { });
+
+        $this->dispatcher->trigger('foo', 'operation');
+    }
+
+    public function testListenerObjectWithArguments()
+    {
+        $obj = __NAMESPACE__.'\DummyObject';
+
+        $container = \Mockery::mock('Wj\Shift\DependencyInjection\ContainerInterface');
+
+        $container->shouldReceive('get')
+            ->with($obj)
+            ->andReturn(new $obj(''));
+
+        $container->shouldReceive('resolveArguments')->andReturn(array());
+
+        $this->dispatcher->setContainer($container);
+
+        $this->dispatcher->attach('foo', 'operation', array($obj, 'onFooName'));
+
+        $this->dispatcher->trigger('foo', 'operation');
+    }
+}
+
+class DummyObject
+{
+    public function __construct($param) { }
+
+    public function onFooName() { }
 }
 
 class DummyListener
