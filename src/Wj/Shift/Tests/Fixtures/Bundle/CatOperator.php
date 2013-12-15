@@ -6,6 +6,13 @@ use Wj\Shift\Operator\OperatorInterface;
 
 class CatOperator implements OperatorInterface
 {
-    public static function getOperations()
+    public function onCatEvent()
     { }
+
+    public static function getOperations()
+    {
+        return array(
+            'cat_event' => 'onCatEvent',
+        );
+    }
 }

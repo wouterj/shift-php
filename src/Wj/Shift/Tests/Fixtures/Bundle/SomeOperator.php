@@ -6,6 +6,13 @@ use Wj\Shift\Operator\OperatorInterface;
 
 class SomeOperator implements OperatorInterface
 {
-    public static function getOperations()
+    public function onSomeEvent()
     { }
+
+    public static function getOperations()
+    {
+        return array(
+            'some_event' => 'onSomeEvent',
+        );
+    }
 }
