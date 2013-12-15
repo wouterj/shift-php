@@ -117,9 +117,31 @@ listen to:
         }
     }
 
-After this, you can register the Operator using ``Operator::add()``:
+After this, you can register the Operator using ``Operation::add()``:
 
-    Operator::add('Acme\Operator\UserOperator');
+    Operation::add('Acme\Operator\UserOperator');
+
+## Bundles
+
+Operators can also be grouped/bundled into bundles. This means you can easily activate
+multiple bundles. A bundle must implement ``Wj\Shift\Bundle\BundleInterface``. This
+requires one method called ``getOperators`` which must return a list of classname.
+
+ShiftPHP provides a basic ``Bundle`` class, which searches for ``*Operator.php`` files
+in the root of the bundle and checks if the class in there implements the ``OperatorInterface``.
+
+A common bundle looks like:
+
+    namespace Amce\Bundle\DemoBundle;
+
+    use Wj\Shift\Bundle\Bundle;
+
+    class AcmeDemoBundle implements Bundle
+    { }
+
+To register a bundle, use ``Application:registerBundle()``:
+
+    Application::registerBundle(new \Acme\Bundle\DemoBundle\AcmeDemoBundle());
 
 ## Contributing
 
