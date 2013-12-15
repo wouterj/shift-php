@@ -22,7 +22,7 @@ interface EventDispatcherInterface
      *
      * @param string $eventName
      * @param string $target    The target, a class name, etc.
-     * @param obj    $event     Optional. The event class
+     * @param object $event     Optional. The event class
      */
     public function trigger($eventName, $target, $event = null);
 

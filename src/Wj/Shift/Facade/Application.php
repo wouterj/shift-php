@@ -13,6 +13,7 @@
 namespace Wj\Shift\Facade;
 
 use Wj\Shift\Operator\OperatorInterface;
+use Wj\Shift\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -25,7 +26,11 @@ class Application
      */
     public static function boot()
     {
+        $container = new Container();
         $dispatcher = new EventDispatcher();
+
+        $dispatcher->setContainer($container);
+
         Event::setDispatcher($dispatcher);
     }
 

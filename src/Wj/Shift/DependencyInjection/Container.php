@@ -50,13 +50,13 @@ class Container implements ContainerInterface
     {
         $arguments = array();
 
-        foreach ($parameters as $parameter) {
+        foreach ($parameters as $key => $parameter) {
             if ($parameter->isOptional()) {
-                $arguments[] = $parameter->getDefaultValue();
+                $arguments[$key] = $parameter->getDefaultValue();
             } elseif (null !== ($class = $parameter->getClass())) {
-                $arguments[] = $this->get($class->getName());
+                $arguments[$key] = $this->get($class->getName());
             } elseif (array_key_exists($parameter->getName(), $this->parameters)) {
-                $arguments[] = $this->parameters[$parameter->getName()];
+                $arguments[$key] = $this->parameters[$parameter->getName()];
             } else {
                 $annotations = $this->annotationReader->getMethodAnnotations($parameter->getDeclaringFunction());
                 $found = false;
@@ -64,7 +64,7 @@ class Container implements ContainerInterface
                     if ($annotation instanceof InjectAnnotation) {
                         foreach ($annotation->getParameters() as $name => $param) {
                             if ($name === $parameter->getName()) {
-                                $arguments[] = $param;
+                                $arguments[$key] = $param;
                                 $found = true;
                             }
                         }

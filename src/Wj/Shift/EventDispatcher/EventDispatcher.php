@@ -12,6 +12,8 @@
 
 namespace Wj\Shift\EventDispatcher;
 
+use Wj\Shift\DependencyInjection\ContainerInterface;
+
 /**
  * Handles event attaching and triggering.
  *
@@ -25,6 +27,11 @@ class EventDispatcher implements EventDispatcherInterface
     private $listeners = array();
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      * {@inheritDoc}
      */
     public function trigger($eventName, $target, $event = null)
@@ -33,8 +40,16 @@ class EventDispatcher implements EventDispatcherInterface
             if (isset($this->listeners[$target]) && $this->listeners[$target]->has($eventName)) {
                 $listeners = $this->listeners[$target]->get($eventName);
 
+                $isContainerAvailable = false !== $this->getContainer();
                 foreach ($listeners as $listener) {
-                    call_user_func($listener, $event);
+                    // make new instance if instance is not yet available
+                    if ($isContainerAvailable && is_array($listener) && is_string($listener[0]) && class_exists($listener[0])) {
+                        $listener[0] = $this->getContainer()->get($listener[0]);
+                    }
+
+                    $arguments = $this->resolveArguments($listener, $event);
+
+                    call_user_func_array($listener, $arguments);
                 }
             }
         } catch (\InvalidArgumentException $e) {
@@ -75,5 +90,64 @@ class EventDispatcher implements EventDispatcherInterface
         }
 
         return $this->listeners;
+    }
+
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Resolves the listener arguments.
+     *
+     * @param callable    $listener
+     * @param null|object $event    The event object
+     */
+    protected function resolveArguments($listener, $event)
+    {
+        if (is_array($listener)) {
+            // object
+            $ref = new \ReflectionClass($listener[0]);
+            $parameters = $ref->getMethod($listener[1])->getParameters();
+            $stringified = get_class($listener[0]).'::'.$listener[1];
+        } else {
+            // method/function/closure
+            $ref = new \ReflectionFunction($listener);
+            $parameters = $ref->getParameters();
+            $stringified = $ref->getName();
+        }
+
+        $eventIndex = false;
+        foreach ($parameters as $index => $argument) {
+            if (in_array($argument->getName(), array('event', 'e'))) {
+                $eventIndex = $index;
+                unset($parameters[$index]);
+                break;
+            }
+        }
+
+        if ($container = $this->getContainer()) {
+            $resolvedArguments = $container->resolveArguments($parameters);
+        } else {
+            if (count($parameters) > 0) {
+                throw new \RuntimeException(sprintf(
+                    'Cannot resolve arguments for listener "%s", did you forgot to set the container for the dispatcher?',
+                    $stringified
+                ));
+            }
+            $resolvedArguments = array();
+        }
+
+        if (false !== $eventIndex) {
+            $resolvedArguments[$eventIndex] = $event;
+            ksort($resolvedArguments);
+        }
+
+        return $resolvedArguments;
+    }
+
+    protected function getContainer()
+    {
+        return null === $this->container ? false : $this->container;
     }
 }

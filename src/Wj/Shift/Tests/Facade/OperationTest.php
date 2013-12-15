@@ -40,4 +40,20 @@ class OperationTest extends EventFacadeTestCase
         $this->assertTrue($listeners->has('event_name'));
         $this->assertCount(2, $listeners->get('event_name'));
     }
+
+    public function testUsingOperatorArguments()
+    {
+        $class = 'Wj\Shift\Tests\Fixtures\Operator\OperatorWithArguments';
+        Operation::add($class);
+
+        $event = new CalledEvent();
+        $this->dispatcher->trigger('event_name', 'operation', $event);
+
+        $this->assertTrue($event->called, 'dependency injection with events works');
+    }
+}
+
+class CalledEvent
+{
+    public $called = false;
 }
