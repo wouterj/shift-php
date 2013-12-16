@@ -12,7 +12,7 @@ Install the ShiftPHP framework using Composer:
 
 ShiftPHP is MOVE oriented: Model, Operation, View and Events. To learn more
 about this, see
-"[MVC is dead, it's time to MOVE on](http://cirw.in//blog/time-to-move-on.html)".
+"[MVC is dead, it's time to MOVE on](http://cirw.in/blog/time-to-move-on.html)".
 
 ## Usage
 
