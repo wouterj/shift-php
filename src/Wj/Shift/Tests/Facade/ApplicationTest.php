@@ -23,15 +23,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     protected $container;
     protected $dispatcher;
 
-    public function setUp()
+    public function testBooting()
     {
-        $this->dispatcher = $d = new EventDispatcher();
-        $d->setContainer($this->container = new Container());
-        Event::setDispatcher($d);
+        Application::boot();
+
+        $dispatcher = $this->readAttribute('Wj\Shift\Facade\Event', 'dispatcher');
+        $this->assertInstanceOf('Wj\Shift\EventDispatcher\EventDispatcher', $dispatcher);
+
+        $this->assertInstanceOf('Wj\Shift\DependencyInjection\Container', $this->readAttribute($dispatcher, 'container'));
     }
 
     public function testRegisteringBundle()
     {
+        $this->dispatcher = $d = new EventDispatcher();
+        $d->setContainer($this->container = new Container());
+        Event::setDispatcher($d);
+
         Application::registerBundle(new Fixtures\Bundle\TheBundle());
 
         $this->assertTrue($this->dispatcher->getListeners('operation')->has('cat_event'));

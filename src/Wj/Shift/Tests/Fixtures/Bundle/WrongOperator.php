@@ -4,6 +4,13 @@ namespace Wj\Shift\Tests\Fixtures\Bundle;
 
 class WrongOperator
 {
-    public static function getOperations()
+    public function onWrongEvent()
     { }
+
+    public static function getOperations()
+    {
+        return array(
+            'wrong_event' => 'onWrongEvent',
+        );
+    }
 }
