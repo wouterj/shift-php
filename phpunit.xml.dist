@@ -15,6 +15,7 @@
             <directory>.</directory>
             <exclude>
                 <directory>src/Wj/Shift/Test/</directory>
+                <directory>src/Wj/Shift/Tests/</directory>
                 <directory>web/</directory>
                 <directory>vendor/</directory>
             </exclude>

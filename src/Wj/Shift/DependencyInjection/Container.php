@@ -15,7 +15,6 @@ namespace Wj\Shift\DependencyInjection;
 use Wj\Shift\DependencyInjection\Annotations\Inject as InjectAnnotation;
 use Wj\Shift\DependencyInjection\Exception;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class Container implements ContainerInterface
 {

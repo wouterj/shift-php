@@ -12,9 +12,10 @@
 
 namespace Wj\Shift\Facade;
 
-use Wj\Shift\Operator\OperatorInterface;
+use Wj\Shift\Bundle\BundleInterface;
 use Wj\Shift\DependencyInjection\Container;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Wj\Shift\EventDispatcher\EventDispatcher;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**
  * @author Wouter J <wouter@wouterj.nl>
@@ -32,27 +33,14 @@ class Application
         $dispatcher->setContainer($container);
 
         Event::setDispatcher($dispatcher);
+
+        AnnotationRegistry::registerAutoloadNamespace('Wj\Shift\DependencyInjection\Annotations', __DIR__.'/../../..');
     }
 
-    /**
-     * Adds an Operator.
-     *
-     * @param object $operator The operator instance
-     */
-    public static function add($operator)
+    public static function registerBundle(BundleInterface $bundle)
     {
-        if (!$operator instanceof OperatorInterface) {
-            $name = explode('\\', get_class($operator));
-            $name = end($name);
-
-            throw new \BadMethodCallException(
-                sprintf(
-                    'Operator "%s" does not have the required method "registerOperations"',
-                    $name
-                )
-            );
+        foreach ($bundle->getOperators() as $operator) {
+            Operation::add($operator);
         }
-
-        $operator->loadAll();
     }
 }
