@@ -12,7 +12,9 @@
 
 namespace Wj\Shift\Test\DependencyInjection;
 
+use Wj\Shift\Facade\Application;
 use Wj\Shift\DependencyInjection\Container;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,6 +23,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = new Container();
+
+        AnnotationRegistry::registerAutoloadNamespace('Wj\Shift\DependencyInjection\Annotations', __DIR__.'/../../../..');
     }
 
     public function tearDown()

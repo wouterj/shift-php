@@ -14,7 +14,8 @@ namespace Wj\Shift\Facade;
 
 use Wj\Shift\Bundle\BundleInterface;
 use Wj\Shift\DependencyInjection\Container;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Wj\Shift\EventDispatcher\EventDispatcher;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**
  * @author Wouter J <wouter@wouterj.nl>
@@ -32,6 +33,8 @@ class Application
         $dispatcher->setContainer($container);
 
         Event::setDispatcher($dispatcher);
+
+        AnnotationRegistry::registerAutoloadNamespace('Wj\Shift\DependencyInjection\Annotations', __DIR__.'/../../..');
     }
 
     public static function registerBundle(BundleInterface $bundle)
