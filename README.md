@@ -125,7 +125,7 @@ After this, you can register the Operator using ``Operation::add()``:
 
 Operators can also be grouped/bundled into bundles. This means you can easily activate
 multiple bundles. A bundle must implement ``Wj\Shift\Bundle\BundleInterface``. This
-requires one method called ``getOperators`` which must return a list of classname.
+requires one method called ``getOperators`` which must return a list of classnames.
 
 ShiftPHP provides a basic ``Bundle`` class, which searches for ``*Operator.php`` files
 in the root of the bundle and checks if the class in there implements the ``OperatorInterface``.
